@@ -7,7 +7,7 @@ import com.github.javafaker.Faker;
 public class DomainModelFaker {
 	private static Faker faker = Faker.instance();
 	
-	public static StockPosition getFakeStockPosition(String symbol) {
+	public static StockPosition fakeStockPosition(String symbol) {
 		return new StockPosition(
 				symbol,
 				fakeQuantity(),
@@ -22,5 +22,13 @@ public class DomainModelFaker {
 
 	public static BigDecimal fakeAmount() {
 		return BigDecimal.valueOf(faker.number().randomDouble(4, 0, 10000000));
+	}
+
+	public static String fakeUser() {
+		return faker.name().username();
+	}
+
+	public static String fakeStockSymbol() {
+		return faker.stock().nsdqSymbol();
 	}
 }

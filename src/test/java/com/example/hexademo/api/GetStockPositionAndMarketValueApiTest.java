@@ -18,7 +18,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static com.example.hexademo.domain.model.DomainModelFaker.fakeAmount;
-import static com.example.hexademo.domain.model.DomainModelFaker.getFakeStockPosition;
+import static com.example.hexademo.domain.model.DomainModelFaker.fakeStockPosition;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
@@ -41,7 +41,7 @@ public class GetStockPositionAndMarketValueApiTest {
 	void get() {
 		// arrange
 		String symbol = "aapl";
-		StockPosition fakeStockPosition = getFakeStockPosition(symbol);
+		StockPosition fakeStockPosition = fakeStockPosition(symbol);
 		String user = "peterpan";
 		when(getStockPositionService.get(user, symbol)).thenReturn(Mono.just(fakeStockPosition));
 		BigDecimal fakeMarketPrice = fakeAmount();
