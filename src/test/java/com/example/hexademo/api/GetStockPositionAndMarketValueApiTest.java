@@ -41,8 +41,8 @@ public class GetStockPositionAndMarketValueApiTest {
 	void get() {
 		// arrange
 		String symbol = "aapl";
-		StockPosition fakeStockPosition = fakeStockPosition(symbol);
 		String user = "peterpan";
+		StockPosition fakeStockPosition = fakeStockPosition(user, symbol);
 		when(getStockPositionService.get(user, symbol)).thenReturn(Mono.just(fakeStockPosition));
 		BigDecimal fakeMarketPrice = fakeAmount();
 		when(getStockMarketValueService.get(symbol, fakeStockPosition.getQuantity())).thenReturn(Mono.just(fakeMarketPrice));

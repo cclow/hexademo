@@ -7,8 +7,9 @@ import com.github.javafaker.Faker;
 public class DomainModelFaker {
 	private static Faker faker = Faker.instance();
 	
-	public static StockPosition fakeStockPosition(String symbol) {
+	public static StockPosition fakeStockPosition(String user, String symbol) {
 		return new StockPosition(
+				user,
 				symbol,
 				fakeQuantity(),
 				faker.currency().code(),

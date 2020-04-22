@@ -19,7 +19,7 @@ class GetStockPositionServiceTest {
 		// arrange
 		String user = DomainModelFaker.fakeUser();
 		String symbol = DomainModelFaker.fakeStockSymbol();
-		StockPosition fakeStockPosition = DomainModelFaker.fakeStockPosition(symbol);
+		StockPosition fakeStockPosition = DomainModelFaker.fakeStockPosition(user, symbol);
 		when(repository.findOneByUserAndSymbol(user, symbol)).thenReturn(Mono.just(fakeStockPosition));
 		
 		// act

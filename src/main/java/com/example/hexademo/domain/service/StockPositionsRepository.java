@@ -7,4 +7,8 @@ public interface StockPositionsRepository {
 	Mono<StockPosition> findOneByUserAndSymbol(
 			String user,
 			String symbol);
+
+	Mono<Void> deleteAll();
+
+	Mono<StockPosition> insert(StockPosition stockPosition);
 }
