@@ -21,17 +21,18 @@ public class GetStockPositionAndMarketValueApiE2ETest {
 	@Autowired
 	private ApplicationContext context;
 
-
 	@Autowired
 	private StockPositionsRepository repository;
 
+	private final String user = "peterpan";
+	
 	@Test
-	@WithMockUser("peterpan")
+	@WithMockUser(user)
 	void getStockPositionAndMarketValue() {
 		final WebTestClient client = WebTestClient.bindToApplicationContext(context).build();
 		// arrange
 		String symbol = DomainModelFaker.fakeStockSymbol();
-		StockPosition fakeStockPosition = DomainModelFaker.fakeStockPosition("peterpan", symbol);
+		StockPosition fakeStockPosition = DomainModelFaker.fakeStockPosition(user, symbol);
 		// seed database
 		repository.deleteAll()
 				.then(repository.insert(fakeStockPosition))

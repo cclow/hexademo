@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 public class GetStockPositionAndMarketValueApiTest {
+	private final String user = "peterpan";
 	@Autowired
 	private WebTestClient client;
 
@@ -37,11 +38,10 @@ public class GetStockPositionAndMarketValueApiTest {
 	private GetStockMarketValueService getStockMarketValueService;
 
 	@Test
-	@WithMockUser("peterpan")
+	@WithMockUser(user)
 	void get() {
 		// arrange
 		String symbol = "aapl";
-		String user = "peterpan";
 		StockPosition fakeStockPosition = fakeStockPosition(user, symbol);
 		when(getStockPositionService.get(user, symbol)).thenReturn(Mono.just(fakeStockPosition));
 		BigDecimal fakeMarketPrice = fakeAmount();
@@ -64,10 +64,10 @@ public class GetStockPositionAndMarketValueApiTest {
 	}
 
 	@Test
-	@WithMockUser("peterpan")
+	@WithMockUser(user)
 	void emptyPosition() {
 		String symbol = "appl";
-		when(getStockPositionService.get("peterpan", symbol)).thenReturn(Mono.empty());
+		when(getStockPositionService.get(user, symbol)).thenReturn(Mono.empty());
 		when(getStockMarketValueService.get(eq(symbol), any()))
 				.thenReturn(Mono.just(fakeAmount()));
 		makeGetRequest(symbol)
