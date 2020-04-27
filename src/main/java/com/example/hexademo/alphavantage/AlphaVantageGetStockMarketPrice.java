@@ -1,7 +1,6 @@
 package com.example.hexademo.alphavantage;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 import com.example.hexademo.domain.service.GetStockMarketPricePort;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 @Slf4j
 public class AlphaVantageGetStockMarketPrice implements GetStockMarketPricePort {
-	@Value("${alphavantage.apiKey}")
+	@Value("${alphavantage.api.key}")
 	private String apiKey;
 
 	@Override
@@ -27,16 +26,11 @@ public class AlphaVantageGetStockMarketPrice implements GetStockMarketPricePort 
 		)
 				.retrieve()
 				.bodyToMono(AlphaVantageTimeSeriesDailyJson.class)
-				.map(json -> getLatestClosingPrice(json.getDaily()));
+				.map(this::getLatestClosingPrice);
 	}
 
-	private BigDecimal getLatestClosingPrice(Map<String, AlphaVantageTimeSeriesDailyJsonDaily> daily) {
-		String latest = "";
-		for (String key: daily.keySet()) {
-			if (key.compareToIgnoreCase(latest) > 0) {
-				latest = key;
-			}
-		}
-		return BigDecimal.valueOf(Double.parseDouble(daily.get(latest).getClosingPrice()));
+	private BigDecimal getLatestClosingPrice(AlphaVantageTimeSeriesDailyJson json) {
+		String lastRefreshed = json.getMetaData().getLastRefreshed();
+		return BigDecimal.valueOf(Double.parseDouble(json.getDaily().get(lastRefreshed).getClosingPrice()));
 	}
 }
