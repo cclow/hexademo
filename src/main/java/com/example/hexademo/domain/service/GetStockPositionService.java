@@ -7,16 +7,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GetStockPositionService {
+
 	private final StockPositionsRepository repository;
 
 	public GetStockPositionService(StockPositionsRepository repository) {
 		this.repository = repository;
 	}
 
-	public Mono<StockPosition> get(
-			String user,
-			String symbol
-	) {
+	public Mono<StockPosition> get(String user, String symbol) {
 		return repository.findOneByUserAndSymbol(user, symbol);
 	}
+
 }

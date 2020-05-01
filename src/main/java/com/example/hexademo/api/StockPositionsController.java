@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class StockPositionsController {
+
 	private final GetStockPositionService getStockPositionService;
+
 	private final GetStockMarketValueService getStockMarketValueService;
 
-	public StockPositionsController(
-			GetStockPositionService getStockPositionService,
+	public StockPositionsController(GetStockPositionService getStockPositionService,
 			GetStockMarketValueService getStockMarketValueService) {
 		this.getStockPositionService = getStockPositionService;
 		this.getStockMarketValueService = getStockMarketValueService;
@@ -25,12 +26,12 @@ public class StockPositionsController {
 
 	@GetMapping("/stock-position-market-value/{symbol}")
 	Mono<GetStockPositionAndMarketValueApiResponseDto> getPositionAndMarketValue(
-			@AuthenticationPrincipal Mono<Principal> principalMono,
-			@PathVariable String symbol
-	) {
-		return principalMono.flatMap(principal -> getStockPositionService.get(principal.getName(), symbol))
-				.zipWhen(stockPosition -> getStockMarketValueService.get(symbol, stockPosition.getQuantity()),
-						(stockPosition, marketValue) -> new GetStockPositionAndMarketValueApiResponseDto(symbol,
-								stockPosition.getQuantity(), stockPosition.getCurrencyCode(), stockPosition.getCost(), marketValue));
+			@AuthenticationPrincipal Mono<Principal> principalMono, @PathVariable String symbol) {
+		return principalMono.flatMap(principal -> getStockPositionService.get(principal.getName(), symbol)).zipWhen(
+				stockPosition -> getStockMarketValueService.get(symbol, stockPosition.getQuantity()),
+				(stockPosition, marketValue) -> new GetStockPositionAndMarketValueApiResponseDto(symbol,
+						stockPosition.getQuantity(), stockPosition.getCurrencyCode(), stockPosition.getCost(),
+						marketValue));
 	}
+
 }

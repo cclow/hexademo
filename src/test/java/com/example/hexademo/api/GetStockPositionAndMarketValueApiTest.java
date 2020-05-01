@@ -27,13 +27,16 @@ import static org.mockito.Mockito.when;
 
 @WebFluxTest
 public class GetStockPositionAndMarketValueApiTest {
+
 	private final String user = "peterpan";
+
 	@Autowired
 	private WebTestClient client;
 
 	// Domain Service
 	@MockBean
 	private GetStockPositionService getStockPositionService;
+
 	@MockBean
 	private GetStockMarketValueService getStockMarketValueService;
 
@@ -45,22 +48,20 @@ public class GetStockPositionAndMarketValueApiTest {
 		StockPosition fakeStockPosition = fakeStockPosition(user, symbol);
 		when(getStockPositionService.get(user, symbol)).thenReturn(Mono.just(fakeStockPosition));
 		BigDecimal fakeMarketPrice = fakeAmount();
-		when(getStockMarketValueService.get(symbol, fakeStockPosition.getQuantity())).thenReturn(Mono.just(fakeMarketPrice));
+		when(getStockMarketValueService.get(symbol, fakeStockPosition.getQuantity()))
+				.thenReturn(Mono.just(fakeMarketPrice));
 		// act
 		makeGetRequest(symbol)
 				// assert
-				.expectStatus().isOk()
-				.expectBody(GetStockPositionAndMarketValueApiResponseDto.class)
-				.value(dto -> assertAll(
-						() -> assertThat(dto.getSymbol()).isEqualTo(symbol),
-						() -> assertThat(dto.getQuantity().doubleValue()).isCloseTo(fakeStockPosition.getQuantity()
-								.doubleValue(), Offset.offset(0.01)),
+				.expectStatus().isOk().expectBody(GetStockPositionAndMarketValueApiResponseDto.class)
+				.value(dto -> assertAll(() -> assertThat(dto.getSymbol()).isEqualTo(symbol),
+						() -> assertThat(dto.getQuantity().doubleValue())
+								.isCloseTo(fakeStockPosition.getQuantity().doubleValue(), Offset.offset(0.01)),
 						() -> assertThat(dto.getCurrencyCode()).isEqualTo(fakeStockPosition.getCurrencyCode()),
-						() -> assertThat(dto.getCost().doubleValue()).isCloseTo(fakeStockPosition.getCost()
-								.doubleValue(), Offset.offset(0.0001)),
-						() -> assertThat(dto.getMarketValue()
-								.doubleValue()).isCloseTo(fakeMarketPrice.doubleValue(), Offset.offset(0.0001))
-				));
+						() -> assertThat(dto.getCost().doubleValue())
+								.isCloseTo(fakeStockPosition.getCost().doubleValue(), Offset.offset(0.0001)),
+						() -> assertThat(dto.getMarketValue().doubleValue()).isCloseTo(fakeMarketPrice.doubleValue(),
+								Offset.offset(0.0001))));
 	}
 
 	@Test
@@ -68,29 +69,23 @@ public class GetStockPositionAndMarketValueApiTest {
 	void emptyPosition() {
 		String symbol = "appl";
 		when(getStockPositionService.get(user, symbol)).thenReturn(Mono.empty());
-		when(getStockMarketValueService.get(eq(symbol), any()))
-				.thenReturn(Mono.just(fakeAmount()));
-		makeGetRequest(symbol)
-				.expectStatus().isOk()
-				.expectBody(Void.class);
+		when(getStockMarketValueService.get(eq(symbol), any())).thenReturn(Mono.just(fakeAmount()));
+		makeGetRequest(symbol).expectStatus().isOk().expectBody(Void.class);
 	}
 
 	@Test
 	@WithAnonymousUser
 	void anonymousGet() {
-		makeGetRequest("aapl")
-				.expectStatus().isForbidden();
+		makeGetRequest("aapl").expectStatus().isForbidden();
 	}
 
 	@Test
 	void unauthenticatedGet() {
-		makeGetRequest("aapl")
-				.expectStatus().isUnauthorized();
+		makeGetRequest("aapl").expectStatus().isUnauthorized();
 	}
 
 	private WebTestClient.ResponseSpec makeGetRequest(String symbol) {
-		return client.get().uri("/stock-position-market-value/" + symbol)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange();
+		return client.get().uri("/stock-position-market-value/" + symbol).accept(MediaType.APPLICATION_JSON).exchange();
 	}
+
 }

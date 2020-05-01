@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DataMongoTest
 class StockPositionsRepositoryIntegrationTest {
+
 	@Autowired
 	private StockPositionsRepository repository;
 
@@ -23,20 +24,19 @@ class StockPositionsRepositoryIntegrationTest {
 		String symbol = DomainModelFaker.fakeStockSymbol();
 		StockPosition fakeStockPosition = DomainModelFaker.fakeStockPosition(user, symbol);
 		// seed database
-		repository.deleteAll()
-				.then(repository.insert(fakeStockPosition))
-				.block(); // make sure it's completed first
+		repository.deleteAll().then(repository.insert(fakeStockPosition)).block(); // make
+																					// sure
+																					// it's
+																					// completed
+																					// first
 
 		// act
 		Mono<StockPosition> result = repository.findOneByUserAndSymbol(user, symbol);
 
 		// assert
 		StepVerifier.create(result)
-				.assertNext(stockPosition ->
-						assertAll(
-								() -> assertThat(stockPosition).isEqualToComparingFieldByField(fakeStockPosition)
-						)
-				)
+				.assertNext(stockPosition -> assertAll(
+						() -> assertThat(stockPosition).isEqualToComparingFieldByField(fakeStockPosition)))
 				.verifyComplete();
 	}
 
@@ -45,12 +45,11 @@ class StockPositionsRepositoryIntegrationTest {
 		String user = DomainModelFaker.fakeUser();
 		String symbol = DomainModelFaker.fakeStockSymbol();
 		// seed database
-		repository.deleteAll()
-				.block();
+		repository.deleteAll().block();
 
 		Mono<StockPosition> result = repository.findOneByUserAndSymbol(user, symbol);
 
-		StepVerifier.create(result)
-				.verifyComplete();
+		StepVerifier.create(result).verifyComplete();
 	}
+
 }

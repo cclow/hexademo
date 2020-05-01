@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
 public class GetStockPositionAndMarketValueApiE2ETest {
+
 	@Autowired
 	private ApplicationContext context;
 
@@ -25,7 +26,7 @@ public class GetStockPositionAndMarketValueApiE2ETest {
 	private StockPositionsRepository repository;
 
 	private final String user = "peterpan";
-	
+
 	@Test
 	@WithMockUser(user)
 	void getStockPositionAndMarketValue() {
@@ -34,26 +35,20 @@ public class GetStockPositionAndMarketValueApiE2ETest {
 		String symbol = DomainModelFaker.fakeStockSymbol();
 		StockPosition fakeStockPosition = DomainModelFaker.fakeStockPosition(user, symbol);
 		// seed database
-		repository.deleteAll()
-				.then(repository.insert(fakeStockPosition))
-				.block();
+		repository.deleteAll().then(repository.insert(fakeStockPosition)).block();
 
 		// act
-		client.get().uri("/stock-position-market-value/" + symbol)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
+		client.get().uri("/stock-position-market-value/" + symbol).accept(MediaType.APPLICATION_JSON).exchange()
 
 				// assert
-				.expectStatus().isOk()
-				.expectBody(GetStockPositionAndMarketValueApiResponseDto.class)
-				.value(dto -> assertAll(
-						() -> assertThat(dto.getSymbol()).isEqualTo(symbol),
-						() -> assertThat(dto.getQuantity().doubleValue()).isCloseTo(fakeStockPosition.getQuantity()
-								.doubleValue(), Offset.offset(0.01)),
+				.expectStatus().isOk().expectBody(GetStockPositionAndMarketValueApiResponseDto.class)
+				.value(dto -> assertAll(() -> assertThat(dto.getSymbol()).isEqualTo(symbol),
+						() -> assertThat(dto.getQuantity().doubleValue())
+								.isCloseTo(fakeStockPosition.getQuantity().doubleValue(), Offset.offset(0.01)),
 						() -> assertThat(dto.getCurrencyCode()).isEqualTo(fakeStockPosition.getCurrencyCode()),
-						() -> assertThat(dto.getCost().doubleValue()).isCloseTo(fakeStockPosition.getCost()
-								.doubleValue(), Offset.offset(0.0001)),
-						() -> assertThat(dto.getMarketValue().doubleValue()).isGreaterThan(0.0))
-				);
+						() -> assertThat(dto.getCost().doubleValue())
+								.isCloseTo(fakeStockPosition.getCost().doubleValue(), Offset.offset(0.0001)),
+						() -> assertThat(dto.getMarketValue().doubleValue()).isGreaterThan(0.0)));
 	}
+
 }

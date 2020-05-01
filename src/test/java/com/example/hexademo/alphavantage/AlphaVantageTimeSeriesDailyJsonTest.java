@@ -11,6 +11,7 @@ import org.springframework.core.io.ClassPathResource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AlphaVantageTimeSeriesDailyJsonTest {
+
 	@SneakyThrows
 	@Test
 	void matchesJson() {
@@ -18,7 +19,8 @@ class AlphaVantageTimeSeriesDailyJsonTest {
 
 		File file = new ClassPathResource("alphavantage-samples/time-series-daily.json").getFile();
 		AlphaVantageTimeSeriesDailyJson json = mapper.readValue(file, AlphaVantageTimeSeriesDailyJson.class);
-		
+
 		assertThat(json).isNotNull();
 	}
+
 }

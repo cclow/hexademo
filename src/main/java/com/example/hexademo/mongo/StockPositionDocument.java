@@ -14,6 +14,8 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockPositionDocument extends StockPosition {
+
 	@Id
-	private ObjectId id; 
+	private ObjectId id;
+
 }

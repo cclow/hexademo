@@ -15,19 +15,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class GetStockMarketPricePortIntegrationTest {
 
-	@Autowired private GetStockMarketPricePort subject;
+	@Autowired
+	private GetStockMarketPricePort subject;
 
 	@Test
 	void get() {
 		String symbol = DomainModelFaker.fakeStockSymbol();
 
-		Mono<BigDecimal> result = subject.get(symbol)
-				.log();
+		Mono<BigDecimal> result = subject.get(symbol).log();
 
-		StepVerifier.create(result)
-				.assertNext(item ->
-						assertThat(item).isGreaterThanOrEqualTo(BigDecimal.ZERO)
-				)
+		StepVerifier.create(result).assertNext(item -> assertThat(item).isGreaterThanOrEqualTo(BigDecimal.ZERO))
 				.verifyComplete();
 	}
+
 }

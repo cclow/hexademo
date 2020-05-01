@@ -5,16 +5,11 @@ import java.math.BigDecimal;
 import com.github.javafaker.Faker;
 
 public class DomainModelFaker {
+
 	private static Faker faker = Faker.instance();
-	
+
 	public static StockPosition fakeStockPosition(String user, String symbol) {
-		return new StockPosition(
-				user,
-				symbol,
-				fakeQuantity(),
-				faker.currency().code(),
-				fakeAmount()
-		);
+		return new StockPosition(user, symbol, fakeQuantity(), faker.currency().code(), fakeAmount());
 	}
 
 	public static BigDecimal fakeQuantity() {
@@ -32,4 +27,5 @@ public class DomainModelFaker {
 	public static String fakeStockSymbol() {
 		return faker.stock().nsdqSymbol();
 	}
+
 }

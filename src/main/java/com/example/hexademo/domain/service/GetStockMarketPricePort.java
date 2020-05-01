@@ -5,5 +5,7 @@ import java.math.BigDecimal;
 import reactor.core.publisher.Mono;
 
 public interface GetStockMarketPricePort {
+
 	Mono<BigDecimal> get(String symbol);
+
 }

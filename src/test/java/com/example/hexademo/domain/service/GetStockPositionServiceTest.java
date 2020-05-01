@@ -10,8 +10,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class GetStockPositionServiceTest {
+
 	private final StockPositionsRepository repository = mock(StockPositionsRepository.class);
-	
+
 	private final GetStockPositionService subject = new GetStockPositionService(repository);
 
 	@Test
@@ -21,13 +22,12 @@ class GetStockPositionServiceTest {
 		String symbol = DomainModelFaker.fakeStockSymbol();
 		StockPosition fakeStockPosition = DomainModelFaker.fakeStockPosition(user, symbol);
 		when(repository.findOneByUserAndSymbol(user, symbol)).thenReturn(Mono.just(fakeStockPosition));
-		
+
 		// act
 		Mono<StockPosition> result = subject.get(user, symbol);
 
 		// assert
-		StepVerifier.create(result)
-				.expectNext(fakeStockPosition)
-				.verifyComplete();
+		StepVerifier.create(result).expectNext(fakeStockPosition).verifyComplete();
 	}
+
 }

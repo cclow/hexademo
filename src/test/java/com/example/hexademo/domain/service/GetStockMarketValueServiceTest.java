@@ -11,6 +11,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class GetStockMarketValueServiceTest {
+
 	private GetStockMarketPricePort getStockMarketPricePort = mock(GetStockMarketPricePort.class);
 
 	private GetStockMarketValueService subject = new GetStockMarketValueService(getStockMarketPricePort);
@@ -22,13 +23,13 @@ class GetStockMarketValueServiceTest {
 		BigDecimal fakeQuantity = DomainModelFaker.fakeQuantity();
 		BigDecimal fakePrice = DomainModelFaker.fakeAmount();
 		when(getStockMarketPricePort.get(symbol)).thenReturn(Mono.just(fakePrice));
-		
+
 		// act
 		Mono<BigDecimal> result = subject.get(symbol, fakeQuantity);
 
 		// assert
-		StepVerifier.create(result)
-				.expectNextMatches(amount -> amount.equals(fakeQuantity.multiply(fakePrice)))
+		StepVerifier.create(result).expectNextMatches(amount -> amount.equals(fakeQuantity.multiply(fakePrice)))
 				.verifyComplete();
 	}
+
 }

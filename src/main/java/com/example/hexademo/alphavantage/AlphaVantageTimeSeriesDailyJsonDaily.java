@@ -9,14 +9,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AlphaVantageTimeSeriesDailyJsonDaily {
+
 	@JsonProperty("1. open")
 	private String openingPrice;
+
 	@JsonProperty("2. high")
 	private String highPrice;
+
 	@JsonProperty("3. low")
 	private String lowPrice;
+
 	@JsonProperty("4. close")
 	private String closingPrice;
+
 	@JsonProperty("5. volume")
 	private String volume;
+
 }

@@ -10,9 +10,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StockPosition {
+
 	private String user;
+
 	private String symbol;
+
 	private BigDecimal quantity;
+
 	private String currencyCode;
+
 	private BigDecimal cost;
+
 }

@@ -11,8 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AlphaVantageTimeSeriesDailyJson {
+
 	@JsonProperty("Meta Data")
 	private AlphaVantageTimeSeriesDailyJsonMetaData metaData;
+
 	@JsonProperty("Time Series (Daily)")
 	private Map<String, AlphaVantageTimeSeriesDailyJsonDaily> daily;
+
 }
