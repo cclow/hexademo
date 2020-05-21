@@ -5,7 +5,6 @@ import com.example.hexademo.domain.model.StockPosition;
 import com.example.hexademo.domain.service.StockPositionsRepository;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -25,15 +24,15 @@ public class GetStockPositionAndMarketValueApiE2ETest {
 	@Autowired
 	private StockPositionsRepository repository;
 
-	private final String user = "peterpan";
+	private final String username = "peterpan";
 
 	@Test
-	@WithMockUser(user)
+	@WithMockUser(username)
 	void getStockPositionAndMarketValue() {
 		final WebTestClient client = WebTestClient.bindToApplicationContext(context).build();
 		// arrange
 		String symbol = DomainModelFaker.fakeStockSymbol();
-		StockPosition fakeStockPosition = DomainModelFaker.fakeStockPosition(user, symbol);
+		StockPosition fakeStockPosition = DomainModelFaker.fakeStockPosition(username, symbol);
 		// seed database
 		repository.deleteAll().then(repository.insert(fakeStockPosition)).block();
 

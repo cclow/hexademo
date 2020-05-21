@@ -5,7 +5,7 @@ import reactor.core.publisher.Mono;
 
 public interface StockPositionsRepository {
 
-	Mono<StockPosition> findOneByUserAndSymbol(String user, String symbol);
+	Mono<StockPosition> findOneByUsernameAndSymbol(String username, String symbol);
 
 	Mono<Void> deleteAll();
 

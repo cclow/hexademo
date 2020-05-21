@@ -1,14 +1,10 @@
 package com.example.hexademo.api;
 
-import java.math.BigDecimal;
-
 import com.example.hexademo.domain.model.StockPosition;
 import com.example.hexademo.domain.service.GetStockMarketValueService;
 import com.example.hexademo.domain.service.GetStockPositionService;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,6 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
+
+import java.math.BigDecimal;
 
 import static com.example.hexademo.domain.model.DomainModelFaker.fakeAmount;
 import static com.example.hexademo.domain.model.DomainModelFaker.fakeStockPosition;
@@ -28,7 +27,7 @@ import static org.mockito.Mockito.when;
 @WebFluxTest
 public class GetStockPositionAndMarketValueApiTest {
 
-	private final String user = "peterpan";
+	private final String username = "peterpan";
 
 	@Autowired
 	private WebTestClient client;
@@ -41,12 +40,12 @@ public class GetStockPositionAndMarketValueApiTest {
 	private GetStockMarketValueService getStockMarketValueService;
 
 	@Test
-	@WithMockUser(user)
+	@WithMockUser(username)
 	void get() {
 		// arrange
 		String symbol = "aapl";
-		StockPosition fakeStockPosition = fakeStockPosition(user, symbol);
-		when(getStockPositionService.get(user, symbol)).thenReturn(Mono.just(fakeStockPosition));
+		StockPosition fakeStockPosition = fakeStockPosition(username, symbol);
+		when(getStockPositionService.get(username, symbol)).thenReturn(Mono.just(fakeStockPosition));
 		BigDecimal fakeMarketPrice = fakeAmount();
 		when(getStockMarketValueService.get(symbol, fakeStockPosition.getQuantity()))
 				.thenReturn(Mono.just(fakeMarketPrice));
@@ -65,10 +64,10 @@ public class GetStockPositionAndMarketValueApiTest {
 	}
 
 	@Test
-	@WithMockUser(user)
+	@WithMockUser(username)
 	void emptyPosition() {
 		String symbol = "appl";
-		when(getStockPositionService.get(user, symbol)).thenReturn(Mono.empty());
+		when(getStockPositionService.get(username, symbol)).thenReturn(Mono.empty());
 		when(getStockMarketValueService.get(eq(symbol), any())).thenReturn(Mono.just(fakeAmount()));
 		makeGetRequest(symbol).expectStatus().isOk().expectBody(Void.class);
 	}

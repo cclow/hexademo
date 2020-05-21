@@ -1,15 +1,15 @@
 package com.example.hexademo.domain.model;
 
-import java.math.BigDecimal;
-
 import com.github.javafaker.Faker;
+
+import java.math.BigDecimal;
 
 public class DomainModelFaker {
 
 	private static Faker faker = Faker.instance();
 
-	public static StockPosition fakeStockPosition(String user, String symbol) {
-		return new StockPosition(user, symbol, fakeQuantity(), faker.currency().code(), fakeAmount());
+	public static StockPosition fakeStockPosition(String username, String symbol) {
+		return new StockPosition(username, symbol, fakeQuantity(), faker.currency().code(), fakeAmount());
 	}
 
 	public static BigDecimal fakeQuantity() {
@@ -20,7 +20,7 @@ public class DomainModelFaker {
 		return BigDecimal.valueOf(faker.number().randomDouble(4, 0, 10000000));
 	}
 
-	public static String fakeUser() {
+	public static String fakeUsername() {
 		return faker.name().username();
 	}
 

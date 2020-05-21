@@ -1,9 +1,8 @@
 package com.example.hexademo.domain.service;
 
 import com.example.hexademo.domain.model.StockPosition;
-import reactor.core.publisher.Mono;
-
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 public class GetStockPositionService {
@@ -14,8 +13,8 @@ public class GetStockPositionService {
 		this.repository = repository;
 	}
 
-	public Mono<StockPosition> get(String user, String symbol) {
-		return repository.findOneByUserAndSymbol(user, symbol);
+	public Mono<StockPosition> get(String username, String symbol) {
+		return repository.findOneByUsernameAndSymbol(username, symbol);
 	}
 
 }

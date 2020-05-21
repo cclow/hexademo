@@ -1,10 +1,9 @@
 package com.example.hexademo.domain.service;
 
-import java.math.BigDecimal;
-
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
 
 @Service
 public class GetStockMarketValueService {
@@ -16,7 +15,9 @@ public class GetStockMarketValueService {
 	}
 
 	public Mono<BigDecimal> get(String symbol, BigDecimal quantity) {
-		return getStockMarketPricePort.get(symbol).map(price -> price.multiply(quantity));
+		return getStockMarketPricePort
+				.get(symbol)
+				.map(price -> price.multiply(quantity));
 	}
 
 }

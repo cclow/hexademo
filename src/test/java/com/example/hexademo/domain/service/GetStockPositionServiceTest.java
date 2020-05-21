@@ -18,16 +18,19 @@ class GetStockPositionServiceTest {
 	@Test
 	void get() {
 		// arrange
-		String user = DomainModelFaker.fakeUser();
+		String username = DomainModelFaker.fakeUsername();
 		String symbol = DomainModelFaker.fakeStockSymbol();
-		StockPosition fakeStockPosition = DomainModelFaker.fakeStockPosition(user, symbol);
-		when(repository.findOneByUserAndSymbol(user, symbol)).thenReturn(Mono.just(fakeStockPosition));
+		StockPosition fakeStockPosition = DomainModelFaker.fakeStockPosition(username, symbol);
+		when(repository.findOneByUsernameAndSymbol(username, symbol))
+				.thenReturn(Mono.just(fakeStockPosition));
 
 		// act
-		Mono<StockPosition> result = subject.get(user, symbol);
+		Mono<StockPosition> result = subject.get(username, symbol);
 
 		// assert
-		StepVerifier.create(result).expectNext(fakeStockPosition).verifyComplete();
+		StepVerifier.create(result)
+		            .expectNext(fakeStockPosition)
+		            .verifyComplete();
 	}
 
 }
