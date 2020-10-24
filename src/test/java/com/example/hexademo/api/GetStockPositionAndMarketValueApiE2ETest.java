@@ -41,13 +41,15 @@ public class GetStockPositionAndMarketValueApiE2ETest {
 
 				// assert
 				.expectStatus().isOk().expectBody(GetStockPositionAndMarketValueApiResponseDto.class)
-				.value(dto -> assertAll(() -> assertThat(dto.getSymbol()).isEqualTo(symbol),
-						() -> assertThat(dto.getQuantity().doubleValue())
-								.isCloseTo(fakeStockPosition.getQuantity().doubleValue(), Offset.offset(0.01)),
-						() -> assertThat(dto.getCurrencyCode()).isEqualTo(fakeStockPosition.getCurrencyCode()),
-						() -> assertThat(dto.getCost().doubleValue())
-								.isCloseTo(fakeStockPosition.getCost().doubleValue(), Offset.offset(0.0001)),
-						() -> assertThat(dto.getMarketValue().doubleValue()).isGreaterThan(0.0)));
+				.value(dto -> {
+					assertThat(dto.getSymbol()).isEqualTo(symbol);
+					assertThat(dto.getQuantity().doubleValue())
+							.isCloseTo(fakeStockPosition.getQuantity().doubleValue(), Offset.offset(0.01));
+					assertThat(dto.getCurrencyCode()).isEqualTo(fakeStockPosition.getCurrencyCode());
+					assertThat(dto.getCost().doubleValue())
+							.isCloseTo(fakeStockPosition.getCost().doubleValue(), Offset.offset(0.0001));
+					assertThat(dto.getMarketValue().doubleValue()).isGreaterThan(0.0);
+				});
 	}
 
 }
